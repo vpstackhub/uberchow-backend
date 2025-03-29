@@ -23,7 +23,7 @@ public class User {
     private LocalDateTime createdOn;
     private LocalDateTime modifiedOn;
 
-    // Constructors
+    
     public User() {}
 
     public User(Long id, String username, String password, String name, String email,

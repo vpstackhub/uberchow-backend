@@ -37,7 +37,7 @@ public class Restaurant {
         this.createdOn = createdOn;
     }
 
-    // Getters and Setters
+    
     public Long getId() {
         return id;
     }

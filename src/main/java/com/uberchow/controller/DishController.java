@@ -26,6 +26,11 @@ public class DishController {
         dish.setCreatedOn(LocalDateTime.now());
         return ResponseEntity.ok(dishRepository.save(dish));
     }
+    
+    @GetMapping
+    public ResponseEntity<List<Dish>> getAllDishes() {
+        return ResponseEntity.ok(dishRepository.findAll());
+    }
 
 }
 

@@ -17,22 +17,24 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    
     @PostMapping("/admin/login")
     public ResponseEntity<?> adminLogin(@RequestBody AuthRequest request) {
+        System.out.println("Admin login attempt: " + request.getUsername() + ", " + request.getPassword());
+
         Optional<User> admin = userRepository.findByUsernameAndPasswordAndIsAdminTrue(
                 request.getUsername(), request.getPassword());
 
         if (admin.isPresent()) {
-            return ResponseEntity.ok("Admin login successful");
+            return ResponseEntity.ok(admin.get());
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid admin credentials");
         }
     }
 
-   
     @PostMapping("/user/login")
     public ResponseEntity<?> userLogin(@RequestBody AuthRequest request) {
+        System.out.println("User login attempt: " + request.getUsername() + ", " + request.getPassword());
+
         Optional<User> user = userRepository.findByUsernameAndPasswordAndIsAdminFalse(
                 request.getUsername(), request.getPassword());
 
@@ -43,7 +45,6 @@ public class AuthController {
         }
     }
 
-   
     @PostMapping("/user/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
@@ -52,8 +53,9 @@ public class AuthController {
 
         user.setCreatedOn(LocalDateTime.now());
         user.setModifiedOn(LocalDateTime.now());
-        user.setIsAdmin(false); 
+        user.setIsAdmin(false);
 
         return ResponseEntity.ok(userRepository.save(user));
     }
 }
+
