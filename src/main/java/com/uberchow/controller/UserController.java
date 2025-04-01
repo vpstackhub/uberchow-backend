@@ -5,6 +5,7 @@ import com.uberchow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.uberchow.dto.LoginRequest;
 
 import java.util.Optional;
 
@@ -32,6 +33,16 @@ public class UserController {
             user.setCreditCardNumber(updatedUser.getCreditCardNumber());
             return ResponseEntity.ok(userRepository.save(user));
         }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @PostMapping("/end-user-login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest request) {
+        Optional<User> userOpt = userRepository.findByEmailAndPassword(request.getEmail(), request.getPassword());
+        if (userOpt.isPresent()) {
+            return ResponseEntity.ok(userOpt.get());
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
     }
 }
 
