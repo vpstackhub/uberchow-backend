@@ -33,7 +33,7 @@ public class DishController {
         dish.setCreatedOn(LocalDateTime.now());
         return ResponseEntity.ok(dishRepository.save(dish));
     }
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<List<Dish>> getAllDishes() {
         return ResponseEntity.ok(dishRepository.findAll());
     }
@@ -71,5 +71,16 @@ public class DishController {
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
+        if (!dishRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        dishRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
